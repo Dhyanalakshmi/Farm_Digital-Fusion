@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        h2 {
+            color: #2d6a4f;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+            width: 100%;
+            text-align: left;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #2d6a4f;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #1b4d3e;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Transaction Details</h2>
+        <p>Total Amount: Rs. {{ order.total_price }}</p>
+
+        <form action="{% url 'final_order_confirmation' order.id %}" method="POST">
+            {% csrf_token %}
+
+            <!-- Payment Method -->
+            <label for="payment_method">Select Payment Method:</label>
+            <select name="payment_method" id="payment_method" onchange="toggleFields()">
+                <option value="">-- Select --</option>
+                <option value="UPI">UPI</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Net Banking">Net Banking</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+            </select>
+
+            <!-- UPI Fields -->
+            <div id="upi_fields" class="hidden">
+                <label for="upi_app">Choose UPI App:</label>
+                <select name="upi_app">
+                    <option value="Paytm">Paytm</option>
+                    <option value="PhonePe">PhonePe</option>
+                    <option value="GooglePay">Google Pay</option>
+                </select>
+
+                <label for="upi_id">Enter UPI ID:</label>
+                <input type="text" name="upi_id" placeholder="e.g. yourname@upi">
+            </div>
+
+            <!-- Credit Card Fields -->
+            <div id="card_fields" class="hidden">
+                <label for="card_number">Card Number:</label>
+                <input type="text" name="card_number" placeholder="xxxx-xxxx-xxxx-xxxx">
+
+                <label for="expiry">Expiry Date:</label>
+                <input type="text" name="expiry" placeholder="MM/YY">
+
+                <label for="cvv">CVV:</label>
+                <input type="password" name="cvv" placeholder="123">
+            </div>
+
+            <!-- Net Banking Fields -->
+            <div id="netbanking_fields" class="hidden">
+                <label for="bank">Bank Name:</label>
+                <input type="text" name="bank" placeholder="e.g. SBI, HDFC">
+
+                <label for="netbank_username">Username:</label>
+                <input type="text" name="netbank_username">
+
+                <label for="netbank_password">Password:</label>
+                <input type="password" name="netbank_password">
+            </div>
+
+            <button type="submit">Confirm Payment</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleFields() {
+            const method = document.getElementById("payment_method").value;
+            document.getElementById("upi_fields").classList.add("hidden");
+            document.getElementById("card_fields").classList.add("hidden");
+            document.getElementById("netbanking_fields").classList.add("hidden");
+
+            if (method === "UPI") {
+                document.getElementById("upi_fields").classList.remove("hidden");
+            } else if (method === "Credit Card") {
+                document.getElementById("card_fields").classList.remove("hidden");
+            } else if (method === "Net Banking") {
+                document.getElementById("netbanking_fields").classList.remove("hidden");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url("{% static 'background/buyers.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 800px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9); /* semi-transparent white for readability */
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+
+    h2, h3 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 8px 16px;
+        margin: 5px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .view-cart-btn {
+        background-color: #2196F3;
+    }
+
+    .view-cart-btn:hover {
+        background-color: #1976D2;
+    }
+
+    table {
+        width: 100%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    p {
+        margin-top: 20px;
+        color: #666;
+    }
+</style>
+
+<div class="container">
+    <h2>Browse Products</h2>
+
+    <!-- Category Buttons -->
+    {% for category in categories %}
+        <a href="{% url 'buyers_category' category %}">
+            <button>{{ category }}</button>
+        </a>
+    {% endfor %}
+
+    <!-- Show Products in Table Format -->
+    {% if products %}
+        <h3>Available Products in {{ selected_category|default:"All Categories" }}</h3>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Seller</th>
+                <th>Price (₹)</th>
+                <th>Available Quantity</th>
+                <th>Action</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.seller.username }}</td>
+                <td>₹{{ product.price }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>
+                    <a href="{% url 'product_detail' product.category product.id %}">
+                        <button>View Details</button>
+                    </a>
+                    <a href="{% url 'cart_page' %}">
+                        <button class="view-cart-btn">View Cart</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No products available in this category.</p>
+    {% endif %}
+</div>
+{% endblock %}

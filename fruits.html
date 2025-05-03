@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fruits</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'background/fruits.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a fruit</h1>
+    <button onclick="window.location.href='{% url 'quantity_price' %}'">Mango</button>
+    <button onclick="window.location.href='{% url 'quantity_price' %}'">Apple</button>
+    <button onclick="window.location.href='{% url 'quantity_price' %}'">Banana</button>
+    <button onclick="window.location.href='{% url 'quantity_price' %}'">Orange</button>
+</body>
+</html>

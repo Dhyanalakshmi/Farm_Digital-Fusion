@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Project</title>
+
+    {% if backgrounds %}
+        <style>
+            body {
+                background-image: url("{{ backgrounds.background_image.url }}");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
+        </style>
+    {% endif %}
+</head>
+<body>
+    <header>
+        <h1>Farm Digital Fusion</h1>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

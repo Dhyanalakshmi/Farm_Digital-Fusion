@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Orders</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'background/common1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+        .container {
+            padding: 40px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .orders-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .order-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 30%;
+            min-width: 280px;
+            transition: transform 0.2s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .order-card strong {
+            color: #2d6a4f;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin-top: 15px;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 900px) {
+            .order-card {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .order-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Orders</h2>
+
+        {% if orders %}
+            <div class="orders-grid">
+                {% for order in orders %}
+                    <div class="order-card">
+                        <p><strong>Product:</strong> {{ order.product.name }}</p>
+                        <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+                        {% if role == "seller" %}
+                            <p><strong>Buyer:</strong> {{ order.buyer.username }}</p>
+                        {% else %}
+                            <p><strong>Seller:</strong> {{ order.product.seller.username }}</p>
+                        {% endif %}
+                        <p><strong>Total Price:</strong> ₹{{ order.total_price }}</p>
+                        <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-orders">No orders found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

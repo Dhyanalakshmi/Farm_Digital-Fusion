@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quantity & Price</title>
+</head>
+<body>
+    <h1>Enter Quantity & Price</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" required><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" required><br><br>
+
+        <button type="submit">Confirm</button>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<h2>Available {{ category|title }}</h2>
+
+{% if products %}
+    <ul>
+        {% for product in products %}
+            <li>
+                <strong>Name:</strong> {{ product.name }} <br>
+                <strong>Price:</strong> ₹{{ product.price }} <br>
+                <strong>Available:</strong> {{ product.quantity }} <br>
+
+                {% if request.path == "/farmers/" %}
+                    <strong>Buyer:</strong> {{ product.buyer.username|default:"Not Assigned" }} <br>
+                {% else %}
+                    <strong>Seller:</strong> {{ product.seller.username|default:"Unknown" }} <br>
+                {% endif %}
+
+                <a href="{% url 'product_detail' category product.id %}">
+                    <button>View Details</button>
+                </a>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No products available in this category.</p>
+{% endif %}

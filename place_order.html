@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Place Order</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        form { margin-top: 20px; text-align: left; }
+        input {
+            padding: 10px; width: 100%; margin-bottom: 10px;
+            border: 1px solid #ccc; border-radius: 5px; text-align: center;
+        }
+        button {
+            padding: 10px; width: 100%;
+            color: white; border: none; border-radius: 5px;
+            cursor: pointer; font-size: 16px;
+        }
+        .confirm-btn { background-color: #28a745; margin-top: 10px; }
+        .cart-btn { background-color: #007bff; margin-top: 10px; }
+        .back-btn { background-color: #dc3545; margin-top: 10px; }
+    </style>
+    <script>
+        function updateTotal() {
+            let price = {{ product.price }};
+            let quantity = document.getElementById("quantity").value;
+            let total = price * quantity;
+            document.getElementById("total_price").innerText = total ? "₹" + total : "₹0";
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Order: {{ product.name }}</h1>
+        <p><strong>Price:</strong> ₹{{ product.price }}</p>
+        <p><strong>Available Quantity:</strong> {{ product.quantity }}</p>
+
+        <!-- Error Message -->
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        <!-- Order Form -->
+        <form method="POST">
+            {% csrf_token %}
+            <label for="quantity">Enter Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="{{ product.quantity }}" required oninput="updateTotal()">
+            <p><strong>Total Price:</strong> <span id="total_price">₹0</span></p>
+
+            <button type="submit" name="confirm_order" class="confirm-btn">Confirm Order</button>
+            <button type="submit" name="add_to_cart" class="cart-btn">Add to Cart</button>
+        </form>
+
+        <!-- Back Button -->
+        <a href="{% url 'buyers' %}">
+            <button class="back-btn">Back to Buyers Page</button>
+        </a>
+    </div>
+
+</body>
+</html>
